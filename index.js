@@ -44,8 +44,8 @@ server.post("/api/users", (req, res) => {
       .json({ errorMessage: "Please provide name and bio for the user." });
   } else {
     db.insert(user)
-      .then(users => {
-        db.findById(users.id).then(user => res.status(201).json(user));
+      .then(() => {
+        db.find().then(users => res.status(201).json(users));
       })
       .catch(() =>
         res.status(500).json({
@@ -86,7 +86,9 @@ server.put("/api/users/:id", (req, res) => {
     db.update(id, changed)
       .then(user => {
         if (user) {
-          db.findById(id).then(user => res.status(200).json(user));
+          db.find()
+            .then(users => res.status(200).json(users))
+            .catch(() => res.status(500).json({ error: "Server Error" }));
         } else {
           res.status(404).json({
             message: "The user with the specified ID does not exist."
