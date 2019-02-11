@@ -1,9 +1,9 @@
 // implement your API here
 const express = require("express");
-const cors = require('cors');
+const cors = require("cors");
 const db = require("./data/db");
 const server = express();
-server.use(cors())
+server.use(cors());
 server.use(express.json());
 
 server.get("/api/users", (req, res) => {
@@ -60,7 +60,9 @@ server.delete("/api/users/:id", (req, res) => {
   db.remove(id)
     .then(user => {
       if (user) {
-        res.status(200).json(user);
+        db.find()
+          .then(users => res.status(200).json(users))
+          .catch(() => res.status(500).json({ error: "Server Error" }));
       } else {
         res
           .status(404)
