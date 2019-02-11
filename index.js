@@ -102,4 +102,6 @@ server.put("/api/users/:id", (req, res) => {
   }
 });
 
-server.listen(5001, () => console.log("listening on port 5000..."));
+const port = process.env.PORT || 5000;
+
+server.listen(port, () => console.log("listening on port 5000..."));
